@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+
 public class Controller {
     // Поля, что ссылаются на объекты внутри дизайна
     @FXML
@@ -160,6 +161,11 @@ public class Controller {
             title_test.setText("Тест по языку JavaScript");
             currentTest = "test_javascript";
 
+            radio_btn_1.setDisable(false); // Включаем radio кнопки
+            radio_btn_2.setDisable(false);
+            radio_btn_3.setDisable(false);
+            radio_btn_4.setDisable(false);
+
             // Очищаем номер вопроса
             nowQuestionTestJS = 0;
 
@@ -204,6 +210,11 @@ public class Controller {
         test_python_btn.setOnAction(e -> {
             title_test.setText("Тест по языку Python");
             currentTest = "test_python";
+
+            radio_btn_1.setDisable(false); // Включаем radio кнопки
+            radio_btn_2.setDisable(false);
+            radio_btn_3.setDisable(false);
+            radio_btn_4.setDisable(false);
 
             // Очищаем номер вопроса
             nowQuestionTestPython = 0;
@@ -250,6 +261,11 @@ public class Controller {
             title_test.setText("Тест по языку Java");
             currentTest = "test_java";
 
+            radio_btn_1.setDisable(false); // Включаем radio кнопки
+            radio_btn_2.setDisable(false);
+            radio_btn_3.setDisable(false);
+            radio_btn_4.setDisable(false);
+
             // Очищаем номер вопроса
             nowQuestionTestJava = 0;
 
@@ -295,6 +311,11 @@ public class Controller {
             nowQuestionTestJava = 0;
             nowQuestionTestPython = 0;
             nowQuestionTestJS = 0;
+
+            radio_btn_1.setDisable(true); // Выключаем radio кнопки
+            radio_btn_2.setDisable(true);
+            radio_btn_3.setDisable(true);
+            radio_btn_4.setDisable(true);
 
             switch (currentTest) {
                 case "test_java":
