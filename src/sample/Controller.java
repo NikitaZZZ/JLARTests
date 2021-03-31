@@ -48,6 +48,18 @@ public class Controller {
     @FXML
     private Text title_test;
 
+    @FXML
+    private Button correctAnswersBtn;
+
+    @FXML
+    private Text correctAnswerText;
+
+    @FXML
+    private Text userAnswerText;
+
+    @FXML
+    private Button nextCorrectAnswerBtn;
+
     // Массив на основе класса Questions. Каждый объект – вопрос с набором возможных ответов
     private final questions[] test_java = new questions[] {
             new questions("В каком из вариантов представлен корректный формат вывода информации на экран?", new String[] {"Console.Write()", "console.log()", "print()", "System.out.println()"}),
@@ -55,7 +67,6 @@ public class Controller {
             new questions("Где правильно присвоено новое значение к многомерному массиву?", new String[] {"a(0)(0) = 1;", "a[0 0] = 1;", "a{0}{0} = 1;", "a[0][0] = 1;"}),
             new questions("Какой метод позволяет запустить программу на Java?", new String[] {"Основного метода нет", "С класса, что был написан первым и с методов что есть внутри него", "Любой, его можно задавать в настройках проекта", "С метода main в любом из классов"}),
             new questions("Каждый файл должен называется...", new String[] {"по имени первой библиотеки в нём", "по имени названия пакета", "как вам захочется", "по имени класса в нём"}),
-            new questions("Сколько параметров может принимать функция?", new String[] {"5", "10", "20", "неограниченное количество"})
     };
 
     private final questions[] test_javascript = new questions[] {
@@ -97,7 +108,7 @@ public class Controller {
                     new String[] {"var num = 2",
                             "Нет ответа",
                             "$num = 2",
-                            "num = float(2"}),
+                            "num = float(2)"}),
             new questions("Сколько библиотек можно импортировать в один проект?",
                     new String[] {"Не более 10",
                             "Не более 23",
@@ -135,6 +146,12 @@ public class Controller {
         radio_btn_4.setVisible(false);
         answerBtn.setVisible(false); // Скрываем кнопку ответа
 
+        // Массив правильных ответов
+        String[] correctAnswersArray = new String[5];
+
+        // Массив ответов пользователя
+        String[] answersUser = new String[5];
+
         // Отслеживание нажатия на кнопку "Закрыть программу"
         closeApp.setOnAction(e -> System.exit(0));
 
@@ -142,6 +159,17 @@ public class Controller {
         test_js_btn.setOnAction(e -> {
             title_test.setText("Тест по языку JavaScript");
             currentTest = "test_javascript";
+
+            // Очищаем номер вопроса
+            nowQuestionTestJS = 0;
+
+            // Очищаем массивы правильных ответов и ответов пользователя
+            Arrays.fill(correctAnswersArray, null);
+            Arrays.fill(answersUser, null);
+
+            // Скрываем текст "Правильный ответ" и "Ваш ответ"
+            correctAnswerText.setVisible(false);
+            userAnswerText.setVisible(false);
 
             // Указываем новый текст верного ответа
             nowCorrectAnswer = test_javascript[nowQuestionTestJS].correctAnswer();
@@ -177,6 +205,17 @@ public class Controller {
             title_test.setText("Тест по языку Python");
             currentTest = "test_python";
 
+            // Очищаем номер вопроса
+            nowQuestionTestPython = 0;
+
+            // Очищаем массивы правильных ответов и ответов пользователя
+            Arrays.fill(correctAnswersArray, null);
+            Arrays.fill(answersUser, null);
+
+            // Скрываем текст "Правильный ответ" и "Ваш ответ"
+            correctAnswerText.setVisible(false);
+            userAnswerText.setVisible(false);
+
             // Указываем новый текст верного ответа
             nowCorrectAnswer = test_python[nowQuestionTestPython].correctAnswer();
 
@@ -211,6 +250,17 @@ public class Controller {
             title_test.setText("Тест по языку Java");
             currentTest = "test_java";
 
+            // Очищаем номер вопроса
+            nowQuestionTestJava = 0;
+
+            // Очищаем массивы правильных ответов и ответов пользователя
+            Arrays.fill(correctAnswersArray, null);
+            Arrays.fill(answersUser, null);
+
+            // Скрываем текст "Правильный ответ" и "Ваш ответ"
+            correctAnswerText.setVisible(false);
+            userAnswerText.setVisible(false);
+
             // Указываем новый текст верного ответа
             nowCorrectAnswer = test_java[nowQuestionTestJava].correctAnswer();
 
@@ -240,10 +290,388 @@ public class Controller {
             radio_btn_4.setText(intList.get(3));
         });
 
+        // Результаты теста
+        correctAnswersBtn.setOnAction(e -> {
+            nowQuestionTestJava = 0;
+            nowQuestionTestPython = 0;
+            nowQuestionTestJS = 0;
+
+            switch (currentTest) {
+                case "test_java":
+                    if (nowQuestionTestJava + 1 == test_java.length) {
+                        System.out.println("The End!");
+                    } else { // Если еще есть вопросы...
+                        radio_btn_1.setVisible(true); // Показываем все поля для выбора
+                        radio_btn_2.setVisible(true);
+                        radio_btn_3.setVisible(true);
+                        radio_btn_4.setVisible(true);
+
+                        // Показываем кнопку "Далее"
+                        nextCorrectAnswerBtn.setVisible(true);
+
+                        // Скрываем кнопку "Показать ответы"
+                        correctAnswersBtn.setVisible(false);
+
+                        correctAnswerText.setVisible(true); // Показываем текст результа
+                        userAnswerText.setVisible(true);
+
+                        // Показываем правильный ответ и ответ пользователя
+                        correctAnswerText.setText("Правильный ответ: " + correctAnswersArray[nowQuestionTestJava]);
+                        userAnswerText.setText("Ваш ответ: " + answersUser[nowQuestionTestJava]);
+
+                        System.out.println("Правильный ответ: " + correctAnswersArray[nowQuestionTestJava]);
+                        System.out.println("Ваш ответ: " + answersUser[nowQuestionTestJava]);
+                        System.out.println("Вопрос - " + nowQuestionTestJava);
+
+                        // Меняем текст вопроса в программе
+                        question_text.setText(test_java[nowQuestionTestJava].getQuestion());
+
+                        // Получаем массив ответов
+                        String[] answers = test_java[nowQuestionTestJava].getAnswers();
+
+                        // Преобразовываем в список (так удобнее сортировать элементы)
+                        List<String> intList = Arrays.asList(answers);
+
+
+                        // Подставляем ответы в радио кнопки
+                        radio_btn_1.setText(intList.get(0));
+                        radio_btn_2.setText(intList.get(1));
+                        radio_btn_3.setText(intList.get(2));
+                        radio_btn_4.setText(intList.get(3));
+
+                        // Увеличиваем номер текущего вопроса
+                        nowQuestionTestJava++;
+                    }
+                    break;
+                case "test_javascript":
+                    if (nowQuestionTestJS + 1 == test_javascript.length) {
+                        System.out.println("The End!");
+                    } else { // Если еще есть вопросы...
+                        radio_btn_1.setVisible(true); // Показываем все поля для выбора
+                        radio_btn_2.setVisible(true);
+                        radio_btn_3.setVisible(true);
+                        radio_btn_4.setVisible(true);
+
+                        // Показываем кнопку "Далее"
+                        nextCorrectAnswerBtn.setVisible(true);
+
+                        // Скрываем кнопку "Показать ответы"
+                        correctAnswersBtn.setVisible(false);
+
+                        correctAnswerText.setVisible(true); // Показываем текст результа
+                        userAnswerText.setVisible(true);
+
+                        // Показываем правильный ответ и ответ пользователя
+                        correctAnswerText.setText("Правильный ответ: " + correctAnswersArray[nowQuestionTestJS]);
+                        userAnswerText.setText("Ваш ответ: " + answersUser[nowQuestionTestJS]);
+
+                        System.out.println("Правильный ответ: " + correctAnswersArray[nowQuestionTestJS]);
+                        System.out.println("Ваш ответ: " + answersUser[nowQuestionTestJS]);
+                        System.out.println("Вопрос - " + nowQuestionTestJS);
+
+                        // Меняем текст вопроса в программе
+                        question_text.setText(test_javascript[nowQuestionTestJS].getQuestion());
+
+                        // Получаем массив ответов
+                        String[] answers = test_javascript[nowQuestionTestJS].getAnswers();
+
+                        // Преобразовываем в список (так удобнее сортировать элементы)
+                        List<String> intList = Arrays.asList(answers);
+
+                        // Подставляем ответы в радио кнопки
+                        radio_btn_1.setText(intList.get(0));
+                        radio_btn_2.setText(intList.get(1));
+                        radio_btn_3.setText(intList.get(2));
+                        radio_btn_4.setText(intList.get(3));
+
+                        // Увеличиваем номер текущего вопроса
+                        nowQuestionTestJS++;
+                    }
+                    break;
+                case "test_python":
+                    if (nowQuestionTestPython + 1 == test_python.length) {
+                        System.out.println("The End!");
+                    } else { // Если еще есть вопросы...
+                        radio_btn_1.setVisible(true); // Показываем все поля для выбора
+                        radio_btn_2.setVisible(true);
+                        radio_btn_3.setVisible(true);
+                        radio_btn_4.setVisible(true);
+
+                        // Показываем кнопку "Далее"
+                        nextCorrectAnswerBtn.setVisible(true);
+
+                        // Скрываем кнопку "Показать ответы"
+                        correctAnswersBtn.setVisible(false);
+
+                        correctAnswerText.setVisible(true); // Показываем текст результа
+                        userAnswerText.setVisible(true);
+
+                        // Показываем правильный ответ и ответ пользователя
+                        correctAnswerText.setText("Правильный ответ: " + correctAnswersArray[nowQuestionTestPython]);
+                        userAnswerText.setText("Ваш ответ: " + answersUser[nowQuestionTestPython]);
+
+                        System.out.println("Правильный ответ: " + correctAnswersArray[nowQuestionTestPython]);
+                        System.out.println("Ваш ответ: " + answersUser[nowQuestionTestPython]);
+                        System.out.println("Вопрос - " + nowQuestionTestPython);
+
+                        // Меняем текст вопроса в программе
+                        question_text.setText(test_python[nowQuestionTestPython].getQuestion());
+
+                        // Получаем массив ответов
+                        String[] answers = test_python[nowQuestionTestPython].getAnswers();
+
+                        // Преобразовываем в список (так удобнее сортировать элементы)
+                        List<String> intList = Arrays.asList(answers);
+
+                        // Подставляем ответы в радио кнопки
+                        radio_btn_1.setText(intList.get(0));
+                        radio_btn_2.setText(intList.get(1));
+                        radio_btn_3.setText(intList.get(2));
+                        radio_btn_4.setText(intList.get(3));
+
+                        // Увеличиваем номер текущего вопроса
+                        nowQuestionTestPython++;
+                    }
+                    break;
+            }
+        });
+
+        // Кнопка далее (Результаты теста)
+        nextCorrectAnswerBtn.setOnAction(e -> {
+            switch (currentTest) {
+                case "test_java":
+                    if (nowQuestionTestJava + 1 == test_java.length) {
+                        radio_btn_1.setVisible(true); // Показываем все поля для выбора
+                        radio_btn_2.setVisible(true);
+                        radio_btn_3.setVisible(true);
+                        radio_btn_4.setVisible(true);
+
+                        // Скрываем кнопку "Далее"
+                        nextCorrectAnswerBtn.setVisible(false);
+
+                        correctAnswerText.setVisible(true); // Показываем текст результа
+                        userAnswerText.setVisible(true);
+
+                        // Меняем текст вопроса в программе
+                        question_text.setText(test_java[nowQuestionTestJava].getQuestion());
+
+                        // Получаем массив ответов
+                        String[] answers = test_java[nowQuestionTestJava].getAnswers();
+
+                        // Преобразовываем в список (так удобнее сортировать элементы)
+                        List<String> intList = Arrays.asList(answers);
+
+                        // Подставляем ответы в радио кнопки
+                        radio_btn_1.setText(intList.get(0));
+                        radio_btn_2.setText(intList.get(1));
+                        radio_btn_3.setText(intList.get(2));
+                        radio_btn_4.setText(intList.get(3));
+
+                        // Показываем правильный ответ и ответ пользователя
+                        correctAnswerText.setText("Правильный ответ: " + correctAnswersArray[nowQuestionTestJava]);
+                        userAnswerText.setText("Ваш ответ: " + answersUser[nowQuestionTestJava]);
+
+                        // Вывод в консоль ответов и номер вопроса
+                        System.out.println("Правильный ответ: " + correctAnswersArray[nowQuestionTestJava]);
+                        System.out.println("Ваш ответ: " + answersUser[nowQuestionTestJava]);
+                        System.out.println("Номер вопроса - " + nowQuestionTestJava);
+                    } else { // Если еще есть вопросы...
+                        radio_btn_1.setVisible(true); // Показываем все поля для выбора
+                        radio_btn_2.setVisible(true);
+                        radio_btn_3.setVisible(true);
+                        radio_btn_4.setVisible(true);
+
+                        correctAnswerText.setVisible(true); // Показываем текст результа
+                        userAnswerText.setVisible(true);
+
+                        // Показываем кнопку ответа и меняем ее текст на "Далее"
+                        correctAnswersBtn.setText("Далее");
+
+                        // Показываем правильный ответ и ответ пользователя
+                        correctAnswerText.setText("Правильный ответ: " + correctAnswersArray[nowQuestionTestJava]);
+                        userAnswerText.setText("Ваш ответ: " + answersUser[nowQuestionTestJava]);
+
+                        System.out.println("Правильный ответ: " + correctAnswersArray[nowQuestionTestJava]);
+                        System.out.println("Ваш ответ: " + answersUser[nowQuestionTestJava]);
+                        System.out.println("Вопрос - " + nowQuestionTestJava);
+
+                        // Меняем текст вопроса в программе
+                        question_text.setText(test_java[nowQuestionTestJava].getQuestion());
+
+                        // Получаем массив ответов
+                        String[] answers = test_java[nowQuestionTestJava].getAnswers();
+
+                        // Преобразовываем в список (так удобнее сортировать элементы)
+                        List<String> intList = Arrays.asList(answers);
+
+                        // Подставляем ответы в радио кнопки
+                        radio_btn_1.setText(intList.get(0));
+                        radio_btn_2.setText(intList.get(1));
+                        radio_btn_3.setText(intList.get(2));
+                        radio_btn_4.setText(intList.get(3));
+
+                        // Увеличиваем номер текущего вопроса
+                        nowQuestionTestJava++;
+                    }
+                    break;
+                case "test_javascript":
+                    if (nowQuestionTestJS + 1 == test_javascript.length) {
+                        radio_btn_1.setVisible(true); // Показываем все поля для выбора
+                        radio_btn_2.setVisible(true);
+                        radio_btn_3.setVisible(true);
+                        radio_btn_4.setVisible(true);
+
+                        // Скрываем кнопку "Далее"
+                        nextCorrectAnswerBtn.setVisible(false);
+
+                        correctAnswerText.setVisible(true); // Показываем текст результа
+                        userAnswerText.setVisible(true);
+
+                        // Меняем текст вопроса в программе
+                        question_text.setText(test_javascript[nowQuestionTestJS].getQuestion());
+
+                        // Получаем массив ответов
+                        String[] answers = test_javascript[nowQuestionTestJS].getAnswers();
+
+                        // Преобразовываем в список (так удобнее сортировать элементы)
+                        List<String> intList = Arrays.asList(answers);
+
+                        // Подставляем ответы в радио кнопки
+                        radio_btn_1.setText(intList.get(0));
+                        radio_btn_2.setText(intList.get(1));
+                        radio_btn_3.setText(intList.get(2));
+                        radio_btn_4.setText(intList.get(3));
+
+                        // Показываем правильный ответ и ответ пользователя
+                        correctAnswerText.setText("Правильный ответ: " + correctAnswersArray[nowQuestionTestJS]);
+                        userAnswerText.setText("Ваш ответ: " + answersUser[nowQuestionTestJS]);
+
+                        // Вывод в консоль ответов и номер вопроса
+                        System.out.println("Правильный ответ: " + correctAnswersArray[nowQuestionTestJS]);
+                        System.out.println("Ваш ответ: " + answersUser[nowQuestionTestJS]);
+                        System.out.println("Номер вопроса - " + nowQuestionTestJS);
+                    } else { // Если еще есть вопросы...
+                        radio_btn_1.setVisible(true); // Показываем все поля для выбора
+                        radio_btn_2.setVisible(true);
+                        radio_btn_3.setVisible(true);
+                        radio_btn_4.setVisible(true);
+
+                        correctAnswerText.setVisible(true); // Показываем текст результа
+                        userAnswerText.setVisible(true);
+
+                        // Показываем кнопку ответа и меняем ее текст на "Далее"
+                        correctAnswersBtn.setText("Далее");
+
+                        // Показываем правильный ответ и ответ пользователя
+                        correctAnswerText.setText("Правильный ответ: " + correctAnswersArray[nowQuestionTestJS]);
+                        userAnswerText.setText("Ваш ответ: " + answersUser[nowQuestionTestJS]);
+
+                        System.out.println("Правильный ответ: " + correctAnswersArray[nowQuestionTestJS]);
+                        System.out.println("Ваш ответ: " + answersUser[nowQuestionTestJS]);
+                        System.out.println("Вопрос - " + nowQuestionTestJS);
+
+                        // Меняем текст вопроса в программе
+                        question_text.setText(test_javascript[nowQuestionTestJS].getQuestion());
+
+                        // Получаем массив ответов
+                        String[] answers = test_javascript[nowQuestionTestJS].getAnswers();
+
+                        // Преобразовываем в список (так удобнее сортировать элементы)
+                        List<String> intList = Arrays.asList(answers);
+
+                        // Подставляем ответы в радио кнопки
+                        radio_btn_1.setText(intList.get(0));
+                        radio_btn_2.setText(intList.get(1));
+                        radio_btn_3.setText(intList.get(2));
+                        radio_btn_4.setText(intList.get(3));
+
+                        // Увеличиваем номер текущего вопроса
+                        nowQuestionTestJS++;
+                    }
+                    break;
+                case "test_python":
+                    if (nowQuestionTestPython + 1 == test_python.length) {
+                        radio_btn_1.setVisible(true); // Показываем все поля для выбора
+                        radio_btn_2.setVisible(true);
+                        radio_btn_3.setVisible(true);
+                        radio_btn_4.setVisible(true);
+
+                        // Скрываем кнопку "Далее"
+                        nextCorrectAnswerBtn.setVisible(false);
+
+                        correctAnswerText.setVisible(true); // Показываем текст результа
+                        userAnswerText.setVisible(true);
+
+                        // Меняем текст вопроса в программе
+                        question_text.setText(test_python[nowQuestionTestPython].getQuestion());
+
+                        // Получаем массив ответов
+                        String[] answers = test_python[nowQuestionTestPython].getAnswers();
+
+                        // Преобразовываем в список (так удобнее сортировать элементы)
+                        List<String> intList = Arrays.asList(answers);
+
+                        // Подставляем ответы в радио кнопки
+                        radio_btn_1.setText(intList.get(0));
+                        radio_btn_2.setText(intList.get(1));
+                        radio_btn_3.setText(intList.get(2));
+                        radio_btn_4.setText(intList.get(3));
+
+                        // Показываем правильный ответ и ответ пользователя
+                        correctAnswerText.setText("Правильный ответ: " + correctAnswersArray[nowQuestionTestPython]);
+                        userAnswerText.setText("Ваш ответ: " + answersUser[nowQuestionTestPython]);
+
+                        // Вывод в консоль ответов и номер вопроса
+                        System.out.println("Правильный ответ: " + correctAnswersArray[nowQuestionTestPython]);
+                        System.out.println("Ваш ответ: " + answersUser[nowQuestionTestPython]);
+                        System.out.println("Номер вопроса - " + nowQuestionTestPython);
+                    } else { // Если еще есть вопросы...
+                        radio_btn_1.setVisible(true); // Показываем все поля для выбора
+                        radio_btn_2.setVisible(true);
+                        radio_btn_3.setVisible(true);
+                        radio_btn_4.setVisible(true);
+
+                        correctAnswerText.setVisible(true); // Показываем текст результа
+                        userAnswerText.setVisible(true);
+
+                        // Показываем кнопку ответа и меняем ее текст на "Далее"
+                        correctAnswersBtn.setText("Далее");
+
+                        // Показываем правильный ответ и ответ пользователя
+                        correctAnswerText.setText("Правильный ответ: " + correctAnswersArray[nowQuestionTestPython]);
+                        userAnswerText.setText("Ваш ответ: " + answersUser[nowQuestionTestPython]);
+
+                        System.out.println("Правильный ответ: " + correctAnswersArray[nowQuestionTestPython]);
+                        System.out.println("Ваш ответ: " + answersUser[nowQuestionTestPython]);
+                        System.out.println("Вопрос - " + nowQuestionTestPython);
+
+                        // Меняем текст вопроса в программе
+                        question_text.setText(test_python[nowQuestionTestPython].getQuestion());
+
+                        // Получаем массив ответов
+                        String[] answers = test_python[nowQuestionTestPython].getAnswers();
+
+                        // Преобразовываем в список (так удобнее сортировать элементы)
+                        List<String> intList = Arrays.asList(answers);
+
+                        // Подставляем ответы в радио кнопки
+                        radio_btn_1.setText(intList.get(0));
+                        radio_btn_2.setText(intList.get(1));
+                        radio_btn_3.setText(intList.get(2));
+                        radio_btn_4.setText(intList.get(3));
+
+                        // Увеличиваем номер текущего вопроса
+                        nowQuestionTestPython++;
+                    }
+                    break;
+            }
+        });
+
         // Отслеживание нажатия на кнопку "Ответить"
         answerBtn.setOnAction(e -> {
             // Получаем выбранную кнопку пользователем
             RadioButton selectedRadioButton = (RadioButton) answers.getSelectedToggle();
+
             // Код будет выполняться только если пользователь выбрал ответ
             if(selectedRadioButton != null) {
                 // Получаем текст ответа
@@ -253,6 +681,8 @@ public class Controller {
                 if (toogleGroupValue.equals(nowCorrectAnswer)) {
                     // Выводим информацию и увеличиваем количество верных ответов
                     System.out.println("Верный ответ");
+
+                    // Увеличиваем число правильных ответов пользователя на один
                     correctAnswers++;
                 } else
                     System.out.println("Не верный ответ");
@@ -261,6 +691,14 @@ public class Controller {
                 switch (currentTest) {
                     case "test_java":
                         if (nowQuestionTestJava + 1 == test_java.length) {
+                            // Добавляем правильный ответ на данный вопрос
+                            correctAnswersArray[nowQuestionTestJava] = nowCorrectAnswer;
+                            System.out.println(Arrays.toString(correctAnswersArray));
+
+                            // Добавляем ответ пользователя в массив answersUser
+                            answersUser[nowQuestionTestJava] = toogleGroupValue;
+                            System.out.println(Arrays.toString(answersUser));
+
                             radio_btn_1.setVisible(false); // Скрываем все поля для выбора
                             radio_btn_2.setVisible(false);
                             radio_btn_3.setVisible(false);
@@ -269,12 +707,20 @@ public class Controller {
 
                             // Показываем текст в конце
                             question_text.setText("Вы ответили корректно на " + correctAnswers + " из " + test_java.length + " вопросов!");
+
+                            // Показываем кнопку "Показать ответы" в конце
+                            correctAnswersBtn.setVisible(true);
                         } else { // Если еще есть вопросы...
+                            // Добавляем правильный ответ на данный вопрос
+                            correctAnswersArray[nowQuestionTestJava] = nowCorrectAnswer;
+                            System.out.println(Arrays.toString(correctAnswersArray));
+
+                            // Добавляем ответ пользователя в массив answersUser
+                            answersUser[nowQuestionTestJava] = toogleGroupValue;
+                            System.out.println(Arrays.toString(answersUser));
+
                             // Увеличиваем номер текущего вопроса
                             nowQuestionTestJava++;
-
-                            System.out.println(nowQuestionTestJava);
-                            System.out.println(test_java.length);
 
                             // Указываем новый текст верного ответа
                             nowCorrectAnswer = test_java[nowQuestionTestJava].correctAnswer();
@@ -299,9 +745,18 @@ public class Controller {
                             // Снимаем выделение, что указал пользователь ранее
                             selectedRadioButton.setSelected(false);
                         }
+
                         break;
                     case "test_javascript":
                         if (nowQuestionTestJS + 1 == test_javascript.length) {
+                            // Добавляем правильный ответ на данный вопрос
+                            correctAnswersArray[nowQuestionTestJS] = nowCorrectAnswer;
+                            System.out.println(Arrays.toString(correctAnswersArray));
+
+                            // Добавляем ответ пользователя в массив answersUser
+                            answersUser[nowQuestionTestJS] = toogleGroupValue;
+                            System.out.println(Arrays.toString(answersUser));
+
                             radio_btn_1.setVisible(false); // Скрываем все поля для выбора
                             radio_btn_2.setVisible(false);
                             radio_btn_3.setVisible(false);
@@ -310,15 +765,23 @@ public class Controller {
 
                             // Показываем текст в конце
                             question_text.setText("Вы ответили корректно на " + correctAnswers + " из " + test_javascript.length + " вопросов!");
+
+                            // Показываем кнопку "Показать ответы" в конце
+                            correctAnswersBtn.setVisible(true);
                         } else { // Если еще есть вопросы...
+                            // Добавляем правильный ответ на данный вопрос
+                            correctAnswersArray[nowQuestionTestJS] = nowCorrectAnswer;
+                            System.out.println(Arrays.toString(correctAnswersArray));
+
+                            // Добавляем ответ пользователя в массив answersUser
+                            answersUser[nowQuestionTestJS] = toogleGroupValue;
+                            System.out.println(Arrays.toString(answersUser));
+
                             // Увеличиваем номер текущего вопроса
                             nowQuestionTestJS++;
 
                             // Указываем новый текст верного ответа
                             nowCorrectAnswer = test_javascript[nowQuestionTestJS].correctAnswer();
-
-                            System.out.println(test_javascript.length);
-                            System.out.println(nowQuestionTestJS);
 
                             // Меняем текст вопроса в программе
                             question_text.setText(test_javascript[nowQuestionTestJS].getQuestion());
@@ -340,9 +803,18 @@ public class Controller {
                             // Снимаем выделение, что указал пользователь ранее
                             selectedRadioButton.setSelected(false);
                         }
+
                         break;
                     case "test_python":
                         if (nowQuestionTestPython + 1 == test_python.length) {
+                            // Добавляем правильный ответ на данный вопрос
+                            correctAnswersArray[nowQuestionTestPython] = nowCorrectAnswer;
+                            System.out.println(Arrays.toString(correctAnswersArray));
+
+                            // Добавляем ответ пользователя в массив answersUser
+                            answersUser[nowQuestionTestPython] = toogleGroupValue;
+                            System.out.println(Arrays.toString(answersUser));
+
                             radio_btn_1.setVisible(false); // Скрываем все поля для выбора
                             radio_btn_2.setVisible(false);
                             radio_btn_3.setVisible(false);
@@ -351,7 +823,18 @@ public class Controller {
 
                             // Показываем текст в конце
                             question_text.setText("Вы ответили корректно на " + correctAnswers + " из " + test_python.length + " вопросов!");
+
+                            // Показываем кнопку "Показать ответы" в конце
+                            correctAnswersBtn.setVisible(true);
                         } else { // Если еще есть вопросы...
+                            // Добавляем правильный ответ на данный вопрос
+                            correctAnswersArray[nowQuestionTestPython] = nowCorrectAnswer;
+                            System.out.println(Arrays.toString(correctAnswersArray));
+
+                            // Добавляем ответ пользователя в массив answersUser
+                            answersUser[nowQuestionTestPython] = toogleGroupValue;
+                            System.out.println(Arrays.toString(answersUser));
+
                             // Увеличиваем номер текущего вопроса
                             nowQuestionTestPython++;
 
@@ -378,6 +861,7 @@ public class Controller {
                             // Снимаем выделение, что указал пользователь ранее
                             selectedRadioButton.setSelected(false);
                         }
+
                         break;
                 }
             }

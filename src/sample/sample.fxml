@@ -118,4 +118,22 @@
             <Cursor fx:constant="HAND" />
         </cursor>
     </Button>
+   <Button fx:id="correctAnswersBtn" layoutX="387.0" layoutY="347.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="175.0" style="-fx-background-color: #f7746a; -fx-border-color: #f7746a; -fx-border-radius: 5px;" stylesheets="@styles/main.css" text="Показать ответы" textFill="WHITE" visible="false">
+      <font>
+         <Font size="13.0" />
+      </font>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+   </Button>
+   <Text fx:id="correctAnswerText" layoutX="230.0" layoutY="287.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="476.0" />
+   <Text fx:id="userAnswerText" layoutX="231.0" layoutY="333.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="486.0" />
+   <Button fx:id="nextCorrectAnswerBtn" layoutX="388.0" layoutY="349.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="175.0" style="-fx-background-color: #f7746a; -fx-border-color: #f7746a; -fx-border-radius: 5px;" stylesheets="@styles/main.css" text="Далее" textFill="WHITE" visible="false">
+      <font>
+         <Font size="13.0" />
+      </font>
+      <cursor>
+         <Cursor fx:constant="HAND" />
+      </cursor>
+   </Button>
 </AnchorPane>
